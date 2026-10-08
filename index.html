@@ -9,16 +9,23 @@
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
 
   <style>
+    :root {
+      --primary: #0f172a;
+      --accent: #0d9488;
+      --accent-hover: #0f766e;
+      --bg-gradient: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+    }
+
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
     }
 
     body {
-      background-color: #f4f6f9;
-      color: #333;
+      background-color: #f8fafc;
+      color: #334155;
     }
 
     .top-bar {
@@ -27,9 +34,122 @@
       padding: 8px 16px;
       display: flex;
       justify-content: space-between;
+      align-items: center;
       font-size: 0.85rem;
       flex-wrap: wrap;
       gap: 8px;
+      position: relative;
+    }
+
+    .top-bar-execs {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    /* FIXED NOTIFICATION BUTTON & DROPDOWN STYLES */
+    .notif-container {
+      position: relative;
+    }
+
+    .notif-btn {
+      background: #0d9488;
+      color: white;
+      border: none;
+      padding: 6px 12px;
+      border-radius: 20px;
+      cursor: pointer;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.85rem;
+      transition: background 0.2s;
+    }
+
+    .notif-btn:hover {
+      background: #0f766e;
+    }
+
+    .notif-badge {
+      background: #ef4444;
+      color: white;
+      border-radius: 50%;
+      padding: 2px 6px;
+      font-size: 0.75rem;
+    }
+
+    .notif-dropdown {
+      display: none;
+      position: absolute;
+      left: 0;
+      top: 42px;
+      width: calc(100vw - 32px);
+      max-width: 340px;
+      background: white;
+      color: #333;
+      border-radius: 8px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+      z-index: 2000;
+      border: 1px solid #e2e8f0;
+      overflow: hidden;
+    }
+
+    @media (min-width: 600px) {
+      .notif-dropdown {
+        left: auto;
+        right: 0;
+      }
+    }
+
+    .notif-dropdown.show {
+      display: block;
+    }
+
+    .notif-header {
+      background: #0f172a;
+      color: white;
+      padding: 10px 14px;
+      font-weight: bold;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .notif-body {
+      max-height: 300px;
+      overflow-y: auto;
+    }
+
+    .notif-item {
+      padding: 12px 14px;
+      border-bottom: 1px solid #f1f5f9;
+    }
+
+    .notif-item:last-child {
+      border-bottom: none;
+    }
+
+    .notif-item-title {
+      font-weight: bold;
+      font-size: 0.9rem;
+      color: #0f172a;
+      word-break: break-word;
+    }
+
+    .notif-item-date {
+      font-size: 0.75rem;
+      color: #94a3b8;
+      margin-bottom: 4px;
+    }
+
+    .notif-item-msg {
+      font-size: 0.85rem;
+      color: #475569;
+      line-height: 1.4;
+      white-space: pre-wrap;
+      word-break: break-word;
+      overflow-wrap: break-word;
     }
 
     .portal-header {
@@ -133,12 +253,18 @@
       flex-wrap: wrap;
     }
 
-    input[type="text"], input[type="password"], select {
+    input[type="text"], input[type="password"], textarea, select {
       padding: 10px;
       border: 1px solid #ccc;
       border-radius: 5px;
       flex: 1;
       min-width: 180px;
+    }
+
+    textarea {
+      min-height: 80px;
+      resize: vertical;
+      width: 100%;
     }
 
     .btn {
@@ -154,25 +280,93 @@
     .btn-warning { background: #d97706; color: white; }
     .btn-danger { background: #dc2626; color: white; }
 
-    .role-selection-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 15px;
-      margin-top: 20px;
-    }
-
-    .role-card {
-      border: 2px solid #e2e8f0;
-      border-radius: 8px;
+    /* AUTH SCREEN STYLES */
+    .auth-wrapper {
+      min-height: 80vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       padding: 20px;
-      text-align: center;
-      cursor: pointer;
-      transition: transform 0.2s, border-color 0.2s;
     }
 
-    .role-card:hover {
-      transform: translateY(-3px);
+    .auth-card {
+      background: #ffffff;
+      width: 100%;
+      max-width: 440px;
+      border-radius: 16px;
+      box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1), 0 8px 10px -6px rgba(0,0,0,0.1);
+      padding: 32px;
+      border: 1px solid #e2e8f0;
+    }
+
+    .auth-title {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #0f172a;
+      text-align: center;
+      margin-bottom: 8px;
+    }
+
+    .auth-subtitle {
+      font-size: 0.9rem;
+      color: #64748b;
+      text-align: center;
+      margin-bottom: 24px;
+    }
+
+    .role-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .role-btn {
+      display: flex;
+      align-items: center;
+      padding: 16px;
+      border: 2px solid #e2e8f0;
+      border-radius: 12px;
+      background: #ffffff;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      text-align: left;
+    }
+
+    .role-btn:hover {
       border-color: #0d9488;
+      background-color: #f0fdf4;
+    }
+
+    .role-icon {
+      font-size: 1.8rem;
+      margin-right: 16px;
+    }
+
+    .role-info h4 {
+      font-size: 1rem;
+      color: #0f172a;
+    }
+
+    .role-info p {
+      font-size: 0.8rem;
+      color: #64748b;
+      margin-top: 2px;
+    }
+
+    .btn-back {
+      background: transparent;
+      border: none;
+      color: #64748b;
+      font-weight: 600;
+      cursor: pointer;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .btn-back:hover {
+      color: #0f172a;
     }
 
     .table-responsive {
@@ -212,9 +406,25 @@
 <body>
 
   <header class="top-bar">
-    <span>👑 <b>President:</b> J. Doe</span>
-    <span>💰 <b>Treasurer:</b> A. Smith</span>
-    <span>📝 <b>Fin. Sec:</b> E. Hinneh</span>
+    <div class="top-bar-execs">
+      <span>👑 <b>President:</b> Enock Hinneh</span>
+      <span>💰 <b>Treasurer:</b> Rachael Gymfi</span>
+    </div>
+
+    <div class="notif-container">
+      <button class="notif-btn" onclick="toggleNotifDropdown()">
+        🔔 Announcements <span id="notifBadge" class="notif-badge">0</span>
+      </button>
+      <div id="notifDropdown" class="notif-dropdown">
+        <div class="notif-header">
+          <span>📢 Broadcast Messages</span>
+          <span style="font-size: 0.75rem; cursor: pointer; opacity: 0.8;" onclick="toggleNotifDropdown()">✕ Close</span>
+        </div>
+        <div id="notifListBody" class="notif-body">
+          <div class="notif-item" style="text-align: center; color: #888;">No new announcements.</div>
+        </div>
+      </div>
+    </div>
   </header>
 
   <div class="portal-header">
@@ -223,40 +433,43 @@
 
   <main class="container">
 
-    <section id="roleSelectScreen" class="card" style="text-align: center;">
-      <h2>Welcome! Select Your Role to Continue</h2>
-      <p style="margin-top: 5px; color: #666;">Choose how you want to log into the alumni portal.</p>
-      
-      <div class="role-selection-grid">
-        <div class="role-card" onclick="showLoginSection('member')">
-          <div style="font-size: 2.5rem;">👥</div>
-          <h3 style="margin-top: 10px;">Alumni Member</h3>
-          <p style="font-size: 0.85rem; color: #666; margin-top: 5px;">View collection progress and the payment roster.</p>
-        </div>
+    <div id="roleSelectScreen" class="auth-wrapper">
+      <div class="auth-card">
+        <h2 class="auth-title">Welcome Portal</h2>
+        <p class="auth-subtitle">Choose your access role to proceed</p>
 
-        <div class="role-card" onclick="showLoginSection('admin')">
-          <div style="font-size: 2.5rem;">⚙️</div>
-          <h3 style="margin-top: 10px;">Executive / Admin</h3>
-          <p style="font-size: 0.85rem; color: #666; margin-top: 5px;">Manage member records and update payments.</p>
+        <div class="role-grid">
+          <div class="role-btn" onclick="openPasswordScreen('member')">
+            <span class="role-icon">👥</span>
+            <div class="role-info">
+              <h4>Alumni Member</h4>
+              <p>View collection metrics & roster</p>
+            </div>
+          </div>
+
+          <div class="role-btn" onclick="openPasswordScreen('admin')">
+            <span class="role-icon">⚙️</span>
+            <div class="role-info">
+              <h4>Executive / Admin</h4>
+              <p>Manage members, dues & months</p>
+            </div>
+          </div>
         </div>
       </div>
+    </div>
 
-      <div id="memberLoginBox" style="display: none; margin-top: 20px; border-top: 1px solid #eee; padding-top: 15px;">
-        <h3>🔑 Enter Member Password</h3>
-        <div class="input-group" style="max-width: 400px; margin: 15px auto 0;">
-          <input type="password" id="memberPasswordInput" placeholder="Enter member password..." />
-          <button class="btn btn-primary" onclick="verifyRolePassword('member')">Login as Member</button>
+    <div id="passwordAuthScreen" class="auth-wrapper" style="display: none;">
+      <div class="auth-card">
+        <button class="btn-back" onclick="backToRoleSelect()">← Back to roles</button>
+        <h2 id="authScreenTitle" class="auth-title">Member Access</h2>
+        <p class="auth-subtitle">Enter your passcode to unlock the portal</p>
+
+        <div style="display: flex; flex-direction: column; gap: 12px;">
+          <input type="password" id="rolePasswordInput" placeholder="Enter password..." style="width: 100%; font-size: 1rem; padding: 12px;" />
+          <button class="btn btn-primary" style="width: 100%; padding: 12px;" onclick="verifySelectedRole()">Unlock Access</button>
         </div>
       </div>
-
-      <div id="adminLoginBox" style="display: none; margin-top: 20px; border-top: 1px solid #eee; padding-top: 15px;">
-        <h3>🔒 Enter Admin Password</h3>
-        <div class="input-group" style="max-width: 400px; margin: 15px auto 0;">
-          <input type="password" id="adminPasswordInput" placeholder="Enter admin password..." />
-          <button class="btn btn-primary" onclick="verifyRolePassword('admin')">Login as Admin</button>
-        </div>
-      </div>
-    </section>
+    </div>
 
     <div id="portalMainContent" style="display: none;">
 
@@ -273,7 +486,7 @@
             <option value="October 2026">October 2026</option>
           </select>
         </div>
-        <button class="btn btn-danger" style="margin-top: 10px;" onclick="handleLogout()">🔒 Change Role / Logout</button>
+        <button class="btn btn-danger" style="margin-top: 10px;" onclick="handleLogout()">🔒 Switch Role / Logout</button>
       </section>
 
       <section id="dashboardTab" class="tab-content active">
@@ -321,6 +534,17 @@
       </section>
 
       <section id="adminTab" class="tab-content">
+
+        <div class="card">
+          <h3>📢 Publish Member Announcement</h3>
+          <p style="margin-top: 5px; color: #666; font-size: 0.9rem;">Broadcast notifications to all members viewing the portal.</p>
+          <div style="display: flex; flex-direction: column; gap: 10px; margin-top: 12px;">
+            <input type="text" id="notifTitleInput" placeholder="Announcement Title..." />
+            <textarea id="notifMsgInput" placeholder="Write your announcement message here..."></textarea>
+            <button class="btn btn-primary" onclick="publishAnnouncement()" style="align-self: flex-start;">Publish Announcement 🚀</button>
+          </div>
+        </div>
+
         <div class="card">
           <h3>⚙️ Admin Month Controls</h3>
           <p style="margin-top: 5px;">Only admins can add or edit collection months.</p>
@@ -377,13 +601,14 @@
 
     // Password Configuration
     const PASSWORDS = {
-      admin: "admin2026",
+      admin: "quamehh2026",
       member: "member2026"
     };
 
     let dbRef = null;
-    let currentUserRole = null; // 'member' or 'admin'
-    let localPortalData = { members: [], payments: {} };
+    let selectedPendingRole = null;
+    let currentUserRole = null;
+    let localPortalData = { members: [], payments: {}, announcements: [] };
 
     // Initialize Firebase App
     if (!firebase.apps.length) {
@@ -398,7 +623,9 @@
         localPortalData = data;
         if (!localPortalData.members) localPortalData.members = [];
         if (!localPortalData.payments) localPortalData.payments = {};
+        if (!localPortalData.announcements) localPortalData.announcements = [];
       }
+      renderNotifications();
       if (currentUserRole) {
         renderAllViews();
       }
@@ -408,21 +635,94 @@
       if (dbRef) dbRef.set(localPortalData);
     }
 
-    function showLoginSection(role) {
-      document.getElementById("memberLoginBox").style.display = role === "member" ? "block" : "none";
-      document.getElementById("adminLoginBox").style.display = role === "admin" ? "block" : "none";
+    function toggleNotifDropdown() {
+      const dropdown = document.getElementById("notifDropdown");
+      dropdown.classList.toggle("show");
     }
 
-    function verifyRolePassword(role) {
-      const inputId = role === "admin" ? "adminPasswordInput" : "memberPasswordInput";
-      const inputVal = document.getElementById(inputId).value;
+    function renderNotifications() {
+      const listContainer = document.getElementById("notifListBody");
+      const badge = document.getElementById("notifBadge");
+      const items = localPortalData.announcements || [];
 
-      if (inputVal === PASSWORDS[role]) {
-        currentUserRole = role;
-        document.getElementById("roleSelectScreen").style.display = "none";
+      badge.innerText = items.length;
+
+      if (items.length === 0) {
+        listContainer.innerHTML = `<div class="notif-item" style="text-align: center; color: #888;">No announcements posted yet.</div>`;
+        return;
+      }
+
+      listContainer.innerHTML = items.slice().reverse().map((a, idx) => `
+        <div class="notif-item">
+          <div class="notif-item-title">${a.title}</div>
+          <div class="notif-item-date">${a.date}</div>
+          <div class="notif-item-msg">${a.message}</div>
+          ${currentUserRole === "admin" ? `<button style="background: none; border: none; color: #dc2626; font-size: 0.75rem; cursor: pointer; margin-top: 4px; padding: 0;" onclick="deleteAnnouncement(${items.length - 1 - idx})">🗑️ Delete</button>` : ''}
+        </div>
+      `).join('');
+    }
+
+    function publishAnnouncement() {
+      const titleInput = document.getElementById("notifTitleInput");
+      const msgInput = document.getElementById("notifMsgInput");
+
+      const title = titleInput.value.trim();
+      const message = msgInput.value.trim();
+
+      if (!title || !message) {
+        alert("Please enter both a title and a message.");
+        return;
+      }
+
+      if (!localPortalData.announcements) {
+        localPortalData.announcements = [];
+      }
+
+      const newNotif = {
+        title: title,
+        message: message,
+        date: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric', hour: '2-digit', minute: '2-digit' })
+      };
+
+      localPortalData.announcements.push(newNotif);
+      saveData();
+
+      titleInput.value = "";
+      msgInput.value = "";
+      alert("Announcement published successfully!");
+    }
+
+    function deleteAnnouncement(index) {
+      if (confirm("Are you sure you want to delete this announcement?")) {
+        localPortalData.announcements.splice(index, 1);
+        saveData();
+      }
+    }
+
+    function openPasswordScreen(role) {
+      selectedPendingRole = role;
+      document.getElementById("roleSelectScreen").style.display = "none";
+      document.getElementById("passwordAuthScreen").style.display = "flex";
+      document.getElementById("authScreenTitle").innerText = role === "admin" ? "Executive Access" : "Member Access";
+      document.getElementById("rolePasswordInput").value = "";
+      document.getElementById("rolePasswordInput").focus();
+    }
+
+    function backToRoleSelect() {
+      selectedPendingRole = null;
+      document.getElementById("passwordAuthScreen").style.display = "none";
+      document.getElementById("roleSelectScreen").style.display = "flex";
+    }
+
+    function verifySelectedRole() {
+      const inputVal = document.getElementById("rolePasswordInput").value;
+
+      if (inputVal === PASSWORDS[selectedPendingRole]) {
+        currentUserRole = selectedPendingRole;
+        document.getElementById("passwordAuthScreen").style.display = "none";
         document.getElementById("portalMainContent").style.display = "block";
 
-        if (role === "admin") {
+        if (currentUserRole === "admin") {
           document.getElementById("adminTabBtn").style.display = "block";
         } else {
           document.getElementById("adminTabBtn").style.display = "none";
@@ -430,19 +730,17 @@
 
         renderAllViews();
       } else {
-        alert("Incorrect password. Please try again.");
+        alert("Incorrect passcode. Please try again.");
       }
     }
 
     function handleLogout() {
       currentUserRole = null;
-      document.getElementById("memberPasswordInput").value = "";
-      document.getElementById("adminPasswordInput").value = "";
-      document.getElementById("memberLoginBox").style.display = "none";
-      document.getElementById("adminLoginBox").style.display = "none";
-
+      selectedPendingRole = null;
+      document.getElementById("rolePasswordInput").value = "";
       document.getElementById("portalMainContent").style.display = "none";
-      document.getElementById("roleSelectScreen").style.display = "block";
+      document.getElementById("passwordAuthScreen").style.display = "none";
+      document.getElementById("roleSelectScreen").style.display = "flex";
       switchTab('dashboard', null);
     }
 
@@ -460,14 +758,20 @@
       updateMonthDropdown();
       renderDashboard();
       renderRoster();
+      renderNotifications();
       if (currentUserRole === "admin") renderAdminTable();
     }
 
     function updateMonthDropdown() {
       const select = document.getElementById("monthSelector");
       if (!select) return;
+      
+      if (!localPortalData.payments || Object.keys(localPortalData.payments).length === 0) {
+        localPortalData.payments = { "October 2026": {} };
+      }
+
       const currentVal = select.value;
-      const months = Object.keys(localPortalData.payments || {});
+      const months = Object.keys(localPortalData.payments);
 
       select.innerHTML = "";
       months.forEach(m => {
@@ -625,9 +929,17 @@
       const name = prompt("Enter new month name (e.g. November 2026):");
       if (name && name.trim()) {
         const formatted = name.trim();
+        if (!localPortalData.payments) {
+          localPortalData.payments = {};
+        }
         if (!localPortalData.payments[formatted]) {
           localPortalData.payments[formatted] = {};
           saveData();
+          setTimeout(() => {
+            const select = document.getElementById("monthSelector");
+            if (select) select.value = formatted;
+            renderAllViews();
+          }, 100);
         } else {
           alert("Month already exists.");
         }
@@ -642,6 +954,11 @@
         localPortalData.payments[formatted] = localPortalData.payments[current] || {};
         delete localPortalData.payments[current];
         saveData();
+        setTimeout(() => {
+          const select = document.getElementById("monthSelector");
+          if (select) select.value = formatted;
+          renderAllViews();
+        }, 100);
       }
     }
   </script>
