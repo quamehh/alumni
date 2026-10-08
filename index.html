@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>JHS Alumni Association Portal</title>
+
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      background-color: #f4f6f9;
+      color: #333;
+    }
+
+    .top-bar {
+      background-color: #1a365d;
+      color: #fff;
+      padding: 8px 16px;
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.85rem;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .portal-header {
+      background-color: #0f2b48;
+      color: #fff;
+      text-align: center;
+      padding: 20px 15px;
+    }
+
+    .nav-tabs {
+      display: flex;
+      background-color: #0d9488;
+      overflow-x: auto;
+    }
+
+    .tab-btn {
+      flex: 1;
+      padding: 14px 10px;
+      border: none;
+      background: transparent;
+      color: #fff;
+      font-weight: bold;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    .tab-btn.active {
+      background-color: #115e59;
+      border-bottom: 3px solid #f59e0b;
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: 20px auto;
+      padding: 0 15px;
+    }
+
+    .card {
+      background: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      margin-bottom: 20px;
+    }
+
+    .tab-content {
+      display: none;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 15px;
+    }
+
+    .stat-card {
+      background: #fff;
+      padding: 15px;
+      border-radius: 8px;
+      border-left: 4px solid #0d9488;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+    }
+
+    .stat-number {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: #0f2b48;
+      margin-top: 5px;
+    }
+
+    .stat-sub {
+      font-size: 1rem;
+      font-weight: bold;
+      color: #555;
+      margin-top: 5px;
+    }
+
+    .progress-container {
+      background: #e2e8f0;
+      border-radius: 10px;
+      height: 10px;
+      overflow: hidden;
+      margin-top: 8px;
+    }
+
+    .progress-bar {
+      background: #0d9488;
+      height: 100%;
+      width: 0%;
+      transition: width 0.3s ease;
+    }
+
+    .input-group {
+      display: flex;
+      gap: 10px;
+      margin-top: 10px;
+      flex-wrap: wrap;
+    }
+
+    input[type="text"], input[type="password"], select {
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      flex: 1;
+      min-width: 180px;
+    }
+
+    .btn {
+      padding: 10px 16px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .btn-primary { background: #2563eb; color: white; }
+    .btn-success { background: #16a34a; color: white; }
+    .btn-warning { background: #d97706; color: white; }
+    .btn-danger { background: #dc2626; color: white; }
+
+    .role-selection-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 15px;
+      margin-top: 20px;
+    }
+
+    .role-card {
+      border: 2px solid #e2e8f0;
+      border-radius: 8px;
+      padding: 20px;
+      text-align: center;
+      cursor: pointer;
+      transition: transform 0.2s, border-color 0.2s;
+    }
+
+    .role-card:hover {
+      transform: translateY(-3px);
+      border-color: #0d9488;
+    }
+
+    .table-responsive {
+      overflow-x: auto;
+      margin-top: 15px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    th, td {
+      padding: 12px;
+      text-align: left;
+      border-bottom: 1px solid #e5e7eb;
+    }
+
+    .badge {
+      padding: 4px 8px;
+      border-radius: 12px;
+      font-size: 0.8rem;
+      font-weight: bold;
+    }
+
+    .badge-paid { background: #dcfce7; color: #15803d; }
+    .badge-unpaid { background: #fee2e2; color: #b91c1c; }
+
+    .admin-actions-row {
+      display: flex;
+      gap: 10px;
+      margin-top: 10px;
+      flex-wrap: wrap;
+    }
+  </style>
+</head>
+<body>
+
+  <header class="top-bar">
+    <span>👑 <b>President:</b> J. Doe</span>
+    <span>💰 <b>Treasurer:</b> A. Smith</span>
+    <span>📝 <b>Fin. Sec:</b> E. Hinneh</span>
+  </header>
+
+  <div class="portal-header">
+    <h1>JHS Alumni Association Portal</h1>
+  </div>
+
+  <main class="container">
+
+    <section id="roleSelectScreen" class="card" style="text-align: center;">
+      <h2>Welcome! Select Your Role to Continue</h2>
+      <p style="margin-top: 5px; color: #666;">Choose how you want to log into the alumni portal.</p>
+      
+      <div class="role-selection-grid">
+        <div class="role-card" onclick="showLoginSection('member')">
+          <div style="font-size: 2.5rem;">👥</div>
+          <h3 style="margin-top: 10px;">Alumni Member</h3>
+          <p style="font-size: 0.85rem; color: #666; margin-top: 5px;">View collection progress and the payment roster.</p>
+        </div>
+
+        <div class="role-card" onclick="showLoginSection('admin')">
+          <div style="font-size: 2.5rem;">⚙️</div>
+          <h3 style="margin-top: 10px;">Executive / Admin</h3>
+          <p style="font-size: 0.85rem; color: #666; margin-top: 5px;">Manage member records and update payments.</p>
+        </div>
+      </div>
+
+      <div id="memberLoginBox" style="display: none; margin-top: 20px; border-top: 1px solid #eee; padding-top: 15px;">
+        <h3>🔑 Enter Member Password</h3>
+        <div class="input-group" style="max-width: 400px; margin: 15px auto 0;">
+          <input type="password" id="memberPasswordInput" placeholder="Enter member password..." />
+          <button class="btn btn-primary" onclick="verifyRolePassword('member')">Login as Member</button>
+        </div>
+      </div>
+
+      <div id="adminLoginBox" style="display: none; margin-top: 20px; border-top: 1px solid #eee; padding-top: 15px;">
+        <h3>🔒 Enter Admin Password</h3>
+        <div class="input-group" style="max-width: 400px; margin: 15px auto 0;">
+          <input type="password" id="adminPasswordInput" placeholder="Enter admin password..." />
+          <button class="btn btn-primary" onclick="verifyRolePassword('admin')">Login as Admin</button>
+        </div>
+      </div>
+    </section>
+
+    <div id="portalMainContent" style="display: none;">
+
+      <nav class="nav-tabs" style="border-radius: 8px 8px 0 0;">
+        <button class="tab-btn active" onclick="switchTab('dashboard', event)">Main Dashboard</button>
+        <button class="tab-btn" onclick="switchTab('roster', event)">Member Roster</button>
+        <button id="adminTabBtn" class="tab-btn" onclick="switchTab('admin', event)" style="display: none;">Admin Panel</button>
+      </nav>
+      
+      <section class="card month-select-card" style="border-radius: 0 0 8px 8px;">
+        <div class="input-group">
+          <label for="monthSelector" style="align-self: center;">📅 <b>Select Tracking Month:</b></label>
+          <select id="monthSelector" onchange="renderAllViews()">
+            <option value="October 2026">October 2026</option>
+          </select>
+        </div>
+        <button class="btn btn-danger" style="margin-top: 10px;" onclick="handleLogout()">🔒 Change Role / Logout</button>
+      </section>
+
+      <section id="dashboardTab" class="tab-content active">
+        <div class="stats-grid">
+          <div class="stat-card">
+            <h3>Active Month Dues</h3>
+            <p id="activeMonthFundDisplay" class="stat-number">GHS 0.00</p>
+          </div>
+          <div class="stat-card">
+            <h3>Total Funds Collected</h3>
+            <p id="grandTotalDisplay" class="stat-number">GHS 0.00</p>
+          </div>
+          <div class="stat-card">
+            <h3>Monthly Target Progress</h3>
+            <p id="monthlyProgressDisplay" class="stat-sub">GHS 0 / 0</p>
+            <div class="progress-container">
+              <div id="progressBar" class="progress-bar"></div>
+            </div>
+          </div>
+          <div class="stat-card">
+            <h3>Member Paid Ratio</h3>
+            <p id="paidRatioDisplay" class="stat-number">0 / 0 Paid</p>
+          </div>
+        </div>
+      </section>
+
+      <section id="rosterTab" class="tab-content">
+        <div class="card">
+          <h2>Member Payment Roster</h2>
+          <div class="table-responsive">
+            <table>
+              <thead>
+                <tr>
+                  <th>Member Name</th>
+                  <th>Month</th>
+                  <th>Dues Amount</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody id="memberRosterBody">
+                </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <section id="adminTab" class="tab-content">
+        <div class="card">
+          <h3>⚙️ Admin Month Controls</h3>
+          <p style="margin-top: 5px;">Only admins can add or edit collection months.</p>
+          <div class="admin-actions-row">
+            <button class="btn btn-primary" onclick="promptCreateMonth()">+ Create New Month 📅</button>
+            <button class="btn btn-warning" onclick="promptRenameMonth()">✏️ Rename Current Month</button>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>👤 Add New Member</h3>
+          <div class="input-group">
+            <input type="text" id="newMemberNameInput" placeholder="Full member name..." />
+            <button class="btn btn-success" onclick="handleAddMember()">Add Member</button>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>Admin Dues Management</h3>
+          <p style="margin-top: 5px;">Click <b>Mark Paid</b> to set GHS 20 paid for the selected month, or <b>Mark Unpaid</b> to revert.</p>
+          <div class="table-responsive">
+            <table>
+              <thead>
+                <tr>
+                  <th>Member Name</th>
+                  <th>Month</th>
+                  <th>Amount</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="adminTableBody">
+                </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+    </div>
+
+  </main>
+
+  <script>
+    // Firebase Configuration
+    const firebaseConfig = {
+      apiKey: "AIzaSyABrQBzDxdvperveW4a5Ax9xQcV8tbnTkRk",
+      authDomain: "jhs-alumni-portal.firebaseapp.com",
+      databaseURL: "https://jhs-alumni-portal-default-rtdb.firebaseio.com",
+      projectId: "jhs-alumni-portal",
+      storageBucket: "jhs-alumni-portal.appspot.com",
+      messagingSenderId: "450708721744",
+      appId: "1:450708721744:web:35413d5ac7940b1dc70155"
+    };
+
+    // Password Configuration
+    const PASSWORDS = {
+      admin: "admin2026",
+      member: "member2026"
+    };
+
+    let dbRef = null;
+    let currentUserRole = null; // 'member' or 'admin'
+    let localPortalData = { members: [], payments: {} };
+
+    // Initialize Firebase App
+    if (!firebase.apps.length) {
+      firebase.initializeApp(firebaseConfig);
+    }
+    dbRef = firebase.database().ref("alumni_portal_data");
+
+    // Live Firebase Sync Listener
+    dbRef.on("value", (snapshot) => {
+      const data = snapshot.val();
+      if (data) {
+        localPortalData = data;
+        if (!localPortalData.members) localPortalData.members = [];
+        if (!localPortalData.payments) localPortalData.payments = {};
+      }
+      if (currentUserRole) {
+        renderAllViews();
+      }
+    });
+
+    function saveData() {
+      if (dbRef) dbRef.set(localPortalData);
+    }
+
+    function showLoginSection(role) {
+      document.getElementById("memberLoginBox").style.display = role === "member" ? "block" : "none";
+      document.getElementById("adminLoginBox").style.display = role === "admin" ? "block" : "none";
+    }
+
+    function verifyRolePassword(role) {
+      const inputId = role === "admin" ? "adminPasswordInput" : "memberPasswordInput";
+      const inputVal = document.getElementById(inputId).value;
+
+      if (inputVal === PASSWORDS[role]) {
+        currentUserRole = role;
+        document.getElementById("roleSelectScreen").style.display = "none";
+        document.getElementById("portalMainContent").style.display = "block";
+
+        if (role === "admin") {
+          document.getElementById("adminTabBtn").style.display = "block";
+        } else {
+          document.getElementById("adminTabBtn").style.display = "none";
+        }
+
+        renderAllViews();
+      } else {
+        alert("Incorrect password. Please try again.");
+      }
+    }
+
+    function handleLogout() {
+      currentUserRole = null;
+      document.getElementById("memberPasswordInput").value = "";
+      document.getElementById("adminPasswordInput").value = "";
+      document.getElementById("memberLoginBox").style.display = "none";
+      document.getElementById("adminLoginBox").style.display = "none";
+
+      document.getElementById("portalMainContent").style.display = "none";
+      document.getElementById("roleSelectScreen").style.display = "block";
+      switchTab('dashboard', null);
+    }
+
+    function switchTab(tabName, evt) {
+      document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+      document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+
+      document.getElementById(tabName + 'Tab').classList.add('active');
+      if (evt && evt.currentTarget) {
+        evt.currentTarget.classList.add('active');
+      }
+    }
+
+    function renderAllViews() {
+      updateMonthDropdown();
+      renderDashboard();
+      renderRoster();
+      if (currentUserRole === "admin") renderAdminTable();
+    }
+
+    function updateMonthDropdown() {
+      const select = document.getElementById("monthSelector");
+      if (!select) return;
+      const currentVal = select.value;
+      const months = Object.keys(localPortalData.payments || {});
+
+      select.innerHTML = "";
+      months.forEach(m => {
+        const opt = document.createElement("option");
+        opt.value = m;
+        opt.textContent = m;
+        select.appendChild(opt);
+      });
+
+      if (months.includes(currentVal)) {
+        select.value = currentVal;
+      } else if (months.length > 0) {
+        select.value = months[months.length - 1];
+      }
+    }
+
+    function getSelectedMonth() {
+      const select = document.getElementById("monthSelector");
+      return select && select.value ? select.value : "October 2026";
+    }
+
+    function renderDashboard() {
+      const members = localPortalData.members || [];
+      const payments = localPortalData.payments || {};
+      const activeMonth = getSelectedMonth();
+
+      let activePaidCount = 0;
+      let totalGrandFund = 0;
+
+      Object.keys(payments).forEach(m => {
+        members.forEach(mem => {
+          if (payments[m] && payments[m][mem.id] === "Paid") {
+            totalGrandFund += 20;
+            if (m === activeMonth) activePaidCount++;
+          }
+        });
+      });
+
+      const activeTotal = activePaidCount * 20;
+      const activeTarget = members.length * 20;
+
+      const activeFundEl = document.getElementById("activeMonthFundDisplay");
+      if (activeFundEl) activeFundEl.innerText = `GHS ${activeTotal.toFixed(2)}`;
+
+      const grandTotalEl = document.getElementById("grandTotalDisplay");
+      if (grandTotalEl) grandTotalEl.innerText = `GHS ${totalGrandFund.toFixed(2)}`;
+
+      const progressEl = document.getElementById("monthlyProgressDisplay");
+      if (progressEl) progressEl.innerText = `GHS ${activeTotal} / GHS ${activeTarget}`;
+
+      const ratioEl = document.getElementById("paidRatioDisplay");
+      if (ratioEl) ratioEl.innerText = `${activePaidCount} / ${members.length} Paid`;
+
+      const barEl = document.getElementById("progressBar");
+      if (barEl) {
+        const pct = activeTarget > 0 ? (activeTotal / activeTarget) * 100 : 0;
+        barEl.style.width = `${pct}%`;
+      }
+    }
+
+    function renderRoster() {
+      const tbody = document.getElementById("memberRosterBody");
+      if (!tbody) return;
+      const members = localPortalData.members || [];
+      const activeMonth = getSelectedMonth();
+      const monthRecord = (localPortalData.payments && localPortalData.payments[activeMonth]) || {};
+
+      tbody.innerHTML = members.map(m => {
+        const status = monthRecord[m.id] === "Paid" ? "Paid" : "Unpaid";
+        const badgeClass = status === "Paid" ? "badge-paid" : "badge-unpaid";
+        return `
+          <tr>
+            <td><b>${m.name}</b></td>
+            <td>${activeMonth}</td>
+            <td>GHS 20.00</td>
+            <td><span class="badge ${badgeClass}">${status}</span></td>
+          </tr>`;
+      }).join('');
+    }
+
+    function renderAdminTable() {
+      const tbody = document.getElementById("adminTableBody");
+      if (!tbody) return;
+      const members = localPortalData.members || [];
+      const activeMonth = getSelectedMonth();
+      const monthRecord = (localPortalData.payments && localPortalData.payments[activeMonth]) || {};
+
+      tbody.innerHTML = members.map(m => {
+        const status = monthRecord[m.id] === "Paid" ? "Paid" : "Unpaid";
+        const badgeClass = status === "Paid" ? "badge-paid" : "badge-unpaid";
+        const toggleBtn = status === "Paid"
+          ? `<button class="btn btn-danger" onclick="toggleStatus(${m.id}, 'Unpaid')">Mark Unpaid</button>`
+          : `<button class="btn btn-success" onclick="toggleStatus(${m.id}, 'Paid')">Mark Paid</button>`;
+
+        const safeName = m.name.replace(/'/g, "\\'");
+
+        return `
+          <tr>
+            <td>
+              <b>${m.name}</b>
+              <button class="btn btn-warning" style="font-size:0.75rem; padding: 2px 6px; margin-left: 6px;" onclick="promptEditName(${m.id}, '${safeName}')">✏️ Edit</button>
+              <button class="btn btn-danger" style="font-size:0.75rem; padding: 2px 6px; margin-left: 4px;" onclick="promptDelete(${m.id}, '${safeName}')">🗑️ Delete</button>
+            </td>
+            <td>${activeMonth}</td>
+            <td>GHS 20.00</td>
+            <td><span class="badge ${badgeClass}">${status}</span></td>
+            <td>${toggleBtn}</td>
+          </tr>`;
+      }).join('');
+    }
+
+    function toggleStatus(memberId, status) {
+      const activeMonth = getSelectedMonth();
+      if (!localPortalData.payments[activeMonth]) localPortalData.payments[activeMonth] = {};
+      localPortalData.payments[activeMonth][memberId] = status;
+      saveData();
+    }
+
+    function handleAddMember() {
+      const input = document.getElementById("newMemberNameInput");
+      const name = input.value.trim();
+      if (!name) return;
+      const newId = localPortalData.members.length > 0 ? Math.max(...localPortalData.members.map(m => m.id)) + 1 : 1;
+      localPortalData.members.push({ id: newId, name });
+      input.value = "";
+      saveData();
+    }
+
+    function promptEditName(id, oldName) {
+      const newName = prompt("Edit member name:", oldName);
+      if (newName && newName.trim()) {
+        const member = localPortalData.members.find(m => m.id === id);
+        if (member) {
+          member.name = newName.trim();
+          saveData();
+        }
+      }
+    }
+
+    function promptDelete(id, name) {
+      if (confirm(`Delete member "${name}"?`)) {
+        localPortalData.members = localPortalData.members.filter(m => m.id !== id);
+        if (localPortalData.payments) {
+          Object.keys(localPortalData.payments).forEach(m => {
+            if (localPortalData.payments[m]) {
+              delete localPortalData.payments[m][id];
+            }
+          });
+        }
+        saveData();
+      }
+    }
+
+    function promptCreateMonth() {
+      const name = prompt("Enter new month name (e.g. November 2026):");
+      if (name && name.trim()) {
+        const formatted = name.trim();
+        if (!localPortalData.payments[formatted]) {
+          localPortalData.payments[formatted] = {};
+          saveData();
+        } else {
+          alert("Month already exists.");
+        }
+      }
+    }
+
+    function promptRenameMonth() {
+      const current = getSelectedMonth();
+      const newName = prompt("Rename current month:", current);
+      if (newName && newName.trim() && newName.trim() !== current) {
+        const formatted = newName.trim();
+        localPortalData.payments[formatted] = localPortalData.payments[current] || {};
+        delete localPortalData.payments[current];
+        saveData();
+      }
+    }
+  </script>
+</body>
+</html>
