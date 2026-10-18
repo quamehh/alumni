@@ -540,6 +540,15 @@
       <section id="rosterTab" class="tab-content">
         <div class="card">
           <h2>Member Payment Roster</h2>
+              <!-- Filter Status Dropdown -->
+    <div style="margin-top: 12px; margin-bottom: 5px;">
+      <label for="rosterFilter" style="font-size: 0.85rem; font-weight: bold;">🔍 Filter Status:</label>
+      <select id="rosterFilter" onchange="renderRoster()" style="padding: 6px 10px; font-size: 0.85rem; margin-left: 8px;">
+        <option value="all">Show All Members</option>
+        <option value="Paid">Paid Only ✅</option>
+        <option value="Unpaid">Unpaid Only ❌</option>
+      </select>
+    </div>
           <div class="table-responsive">
             <table>
               <thead>
@@ -870,14 +879,29 @@
       }
     }
 
-    function renderRoster() {
+        function renderRoster() {
       const tbody = document.getElementById("memberRosterBody");
       if (!tbody) return;
       const members = localPortalData.members || [];
       const activeMonth = getSelectedMonth();
       const monthRecord = (localPortalData.payments && localPortalData.payments[activeMonth]) || {};
+      
+      const filterSelect = document.getElementById("rosterFilter");
+      const filterValue = filterSelect ? filterSelect.value : "all";
 
-      tbody.innerHTML = members.map(m => {
+      const filteredMembers = members.filter(m => {
+        const status = monthRecord[m.id] === "Paid" ? "Paid" : "Unpaid";
+        if (filterValue === "Paid") return status === "Paid";
+        if (filterValue === "Unpaid") return status === "Unpaid";
+        return true; // Show all
+      });
+
+      if (filteredMembers.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="4" style="text-align: center; color: #888; padding: 20px;">No members found for this filter.</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = filteredMembers.map(m => {
         const status = monthRecord[m.id] === "Paid" ? "Paid" : "Unpaid";
         const badgeClass = status === "Paid" ? "badge-paid" : "badge-unpaid";
         return `
