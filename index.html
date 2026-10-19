@@ -423,96 +423,266 @@
   transform: scale(1.08);
   background-color: #20ba5a;
 }
+    /* NEUMORPHIC LOGIN THEME */
+    .neu-wrapper {
+      min-height: 85vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #e0e0e0;
+      padding: 20px;
+    }
+
+    .neu-card {
+      width: 100%;
+      max-width: 400px;
+      padding: 40px 30px;
+      background: #e0e0e0;
+      border-radius: 40px;
+      box-shadow: 20px 20px 60px #bebebe, -20px -20px 60px #ffffff;
+      text-align: center;
+    }
+
+    .neu-card h2 {
+      color: #333;
+      font-size: 1.8rem;
+      margin-bottom: 5px;
+    }
+
+    .neu-card p {
+      color: #777;
+      font-size: 0.9rem;
+      margin-bottom: 30px;
+    }
+
+    .neu-input-group {
+      position: relative;
+      margin-bottom: 20px;
+      background: #e0e0e0;
+      border-radius: 50px;
+      box-shadow: inset 5px 5px 10px #bebebe, inset -5px -5px 10px #ffffff;
+      display: flex;
+      align-items: center;
+      padding: 4px 15px;
+    }
+
+    .neu-input-group span {
+      font-size: 1.1rem;
+      margin-right: 10px;
+    }
+
+    .neu-input-group input {
+      width: 100%;
+      border: none;
+      outline: none;
+      background: transparent;
+      padding: 12px 5px;
+      font-size: 0.95rem;
+      color: #333;
+    }
+
+    .neu-btn {
+      width: 100%;
+      padding: 14px;
+      border: none;
+      border-radius: 50px;
+      background: #e0e0e0;
+      color: #333;
+      font-weight: bold;
+      font-size: 1rem;
+      cursor: pointer;
+      box-shadow: 5px 5px 10px #bebebe, -5px -5px 10px #ffffff;
+      transition: all 0.2s ease;
+      margin-top: 10px;
+    }
+
+    .neu-btn:active {
+      box-shadow: inset 3px 3px 6px #bebebe, inset -3px -3px 6px #ffffff;
+    }
+    /* DARK MODE STYLES */
+    body.dark-mode {
+      background-color: #0f172a !important;
+      color: #f1f5f9 !important;
+    }
+
+    body.dark-mode .card,
+    body.dark-mode .stat-card {
+      background-color: #1e293b !important;
+      color: #f1f5f9 !important;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3) !important;
+    }
+
+    body.dark-mode .portal-header {
+      background-color: #0284c7 !important;
+    }
+
+    body.dark-mode table th {
+      background-color: #334155 !important;
+      color: #f8fafc !important;
+    }
+
+    body.dark-mode table td {
+      border-bottom-color: #334155 !important;
+      color: #cbd5e1 !important;
+    }
+
+    body.dark-mode input[type="text"],
+    body.dark-mode input[type="password"],
+    body.dark-mode textarea,
+    body.dark-mode select {
+      background-color: #334155 !important;
+      color: #ffffff !important;
+      border-color: #475569 !important;
+    }
+
+    /* Dark Mode Neumorphic Login Card */
+    body.dark-mode .neu-wrapper {
+      background: #0f172a !important;
+    }
+
+    body.dark-mode .neu-card {
+      background: #1e293b !important;
+      box-shadow: 10px 10px 30px #090d16, -10px -10px 30px #152030 !important;
+    }
+
+    body.dark-mode .neu-card h2,
+    body.dark-mode .neu-card p {
+      color: #f8fafc !important;
+    }
+
+    body.dark-mode .neu-input-group {
+      background: #1e293b !important;
+      box-shadow: inset 4px 4px 8px #090d16, inset -4px -4px 8px #152030 !important;
+    }
+
+    body.dark-mode .neu-input-group input {
+      color: #ffffff !important;
+    }
+
+    body.dark-mode .neu-btn {
+      background: #1e293b !important;
+      color: #38bdf8 !important;
+      box-shadow: 4px 4px 10px #090d16, -4px -4px 10px #152030 !important;
+    }
+
+    /* Dark Mode Toggle Button Styling */
+    .theme-toggle-btn {
+      background: #334155;
+      color: #f8fafc;
+      border: 1px solid #475569;
+      padding: 6px 12px;
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: 0.85rem;
+      font-weight: bold;
+      transition: all 0.2s ease;
+    }
+
+    .theme-toggle-btn:hover {
+      background: #475569;
+    }
+    /* Fix dashboard stat text colors in dark mode */
+    body.dark-mode .stat-number {
+      color: #38bdf8 !important; /* Bright cyan accent for big numbers */
+    }
+
+    body.dark-mode .stat-sub {
+      color: #94a3b8 !important; /* Soft bright grey for subtext */
+    }
+
+    body.dark-mode .stat-card h3 {
+      color: #f8fafc !important; /* Bright white for card headings */
+    }
+
   </style>
 </head>
 <body>
-
-  <header class="top-bar">
-    <div class="top-bar-execs">
-      <span>👑 <b>President:</b> Enock Hinneh</span>
-      <span>🥈 <b>Secretary:</b> Rachael Gymfi</span>
-    </div>
-
-    <div class="notif-container">
-      <button class="notif-btn" onclick="toggleNotifDropdown()">
-        🔔 Announcements <span id="notifBadge" class="notif-badge">0</span>
-      </button>
-      <div id="notifDropdown" class="notif-dropdown">
-        <div class="notif-header">
-          <span>📢 Broadcast Messages</span>
-          <span style="font-size: 0.75rem; cursor: pointer; opacity: 0.8;" onclick="toggleNotifDropdown()">✕ Close</span>
-        </div>
-        <div id="notifListBody" class="notif-body">
-          <div class="notif-item" style="text-align: center; color: #888;">No new announcements.</div>
-        </div>
-      </div>
-    </div>
-  </header>
-
-  <div class="portal-header">
-    <h1>JHS Alumni Association Portal</h1>
-  </div>
+    <header>
+        <button class="theme-toggle-btn" onclick="toggleDarkMode()">
+            <span id="themeIcon">🌙</span> <span id="themeText">Dark</span>
+          </button>
+    </header>
 
   <main class="container">
 
-    <div id="roleSelectScreen" class="auth-wrapper">
-      <div class="auth-card">
-        <h2 class="auth-title">Welcome Portal</h2>
-        <p class="auth-subtitle">Choose your access role to proceed</p>
+    <!-- 1. NEUMORPHIC LOGIN SCREEN (Shows first) -->
+    <div id="roleSelectScreen" class="neu-wrapper">
+      <div class="neu-card">
+        <h2>Login</h2>
+        <p>Sign in to your account</p>
 
-        <div class="role-grid">
-          <div class="role-btn" onclick="openPasswordScreen('member')">
-            <span class="role-icon">👥</span>
-            <div class="role-info">
-              <h4>Alumni Member</h4>
-              <p>View collection metrics & roster</p>
-            </div>
-          </div>
-
-          <div class="role-btn" onclick="openPasswordScreen('admin')">
-            <span class="role-icon">⚙️</span>
-            <div class="role-info">
-              <h4>Executive / Admin</h4>
-              <p>Manage members, dues & months</p>
-            </div>
-          </div>
+        <div class="neu-input-group">
+          <span>👤</span>
+          <input type="text" id="loginUsernameInput" placeholder="Enter your name..." />
         </div>
+
+        <div class="neu-input-group">
+          <span>🔒</span>
+          <input type="password" id="loginPasswordInput" placeholder="••••••••" />
+        </div>
+
+        <button class="neu-btn" onclick="handleNeumorphicLogin()">SIGN IN</button>
       </div>
     </div>
 
-    <div id="passwordAuthScreen" class="auth-wrapper" style="display: none;">
-      <div class="auth-card">
-        <button class="btn-back" onclick="backToRoleSelect()">← Back to roles</button>
-        <h2 id="authScreenTitle" class="auth-title">Member Access</h2>
-        <p class="auth-subtitle">Enter your passcode to unlock the portal</p>
-
-        <div style="display: flex; flex-direction: column; gap: 12px;">
-          <input type="password" id="rolePasswordInput" placeholder="Enter password..." style="width: 100%; font-size: 1rem; padding: 12px;" />
-          <button class="btn btn-primary" style="width: 100%; padding: 12px;" onclick="verifySelectedRole()">Unlock Access</button>
-        </div>
-      </div>
-    </div>
-
+    <!-- 2. PORTAL MAIN INTERFACE (Hidden until logged in) -->
     <div id="portalMainContent" style="display: none;">
 
-      <nav class="nav-tabs" style="border-radius: 8px 8px 0 0;">
+      <!-- Top Executive Bar (NOW INSIDE) -->
+            <!-- Top Executive Bar -->
+      <header class="top-bar">
+        <div class="top-bar-execs">
+          <span>👑 <b>President:</b> Enock Hinneh</span>
+          <span>📝 <b>Secretary:</b> Rachael Gyemfi</span>
+        </div>
+
+        <div style="display: flex; gap: 8px; align-items: center;">
+          <!-- Theme Toggle Button -->
+         
+
+          <!-- Notification Dropdown -->
+          <div class="notif-container">
+            <button class="notif-btn" onclick="toggleNotifDropdown()">
+              🔔 Announcements <span id="notifBadge" class="notif-badge">0</span>
+            </button>
+            <div id="notifDropdown" class="notif-dropdown">
+              <div class="notif-header">
+                <span>📢 Broadcast Messages</span>
+                <span style="font-size: 0.75rem; cursor: pointer; opacity: 0.8;" onclick="toggleNotifDropdown()">✕ Close</span>
+              </div>
+              <div id="notifListBody" class="notif-body">
+                <div class="notif-item" style="text-align: center; color: #888;">No new announcements.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </header>
+
+
+      <!-- Portal Title Header (NOW INSIDE) -->
+      <div class="portal-header" style="border-radius: 8px 8px 0 0;">
+        <h1>JHS Alumni Association Portal</h1>
+      </div>
+
+      <!-- Main Navigation Tabs -->
+      <nav class="nav-tabs">
         <button class="tab-btn active" onclick="switchTab('dashboard', event)">Main Dashboard</button>
         <button class="tab-btn" onclick="switchTab('roster', event)">Member Roster</button>
         <button id="adminTabBtn" class="tab-btn" onclick="switchTab('admin', event)" style="display: none;">Admin Panel</button>
       </nav>
-      
+
+      <!-- Tracking Month Selector & Logout Button -->
       <section class="card month-select-card" style="border-radius: 0 0 8px 8px;">
         <div class="input-group">
           <label for="monthSelector" style="align-self: center;">📅 <b>Select Tracking Month:</b></label>
           <select id="monthSelector" onchange="renderAllViews()">
-            <option value="December 2026">October 2026</option>
-            <option value="November 2026">November 2026</option>
-            <option value="December 2026">December 2026</option>
+            <option value="October 2026">October 2026</option>
           </select>
         </div>
         <button class="btn btn-danger" style="margin-top: 10px;" onclick="handleLogout()">🔒 Switch Role / Logout</button>
       </section>
 
+      <!-- TAB 1: MAIN DASHBOARD VIEW -->
       <section id="dashboardTab" class="tab-content active">
         <div class="stats-grid">
           <div class="stat-card">
@@ -537,18 +707,21 @@
         </div>
       </section>
 
+      <!-- TAB 2: MEMBER ROSTER VIEW -->
       <section id="rosterTab" class="tab-content">
         <div class="card">
           <h2>Member Payment Roster</h2>
-              <!-- Filter Status Dropdown -->
-    <div style="margin-top: 12px; margin-bottom: 5px;">
-      <label for="rosterFilter" style="font-size: 0.85rem; font-weight: bold;">🔍 Filter Status:</label>
-      <select id="rosterFilter" onchange="renderRoster()" style="padding: 6px 10px; font-size: 0.85rem; margin-left: 8px;">
-        <option value="all">Show All Members</option>
-        <option value="Paid">Paid Only ✅</option>
-        <option value="Unpaid">Unpaid Only ❌</option>
-      </select>
-    </div>
+          
+          <!-- Filter Status Dropdown -->
+          <div style="margin-top: 12px; margin-bottom: 5px;">
+            <label for="rosterFilter" style="font-size: 0.85rem; font-weight: bold;">🔍 Filter Status:</label>
+            <select id="rosterFilter" onchange="renderRoster()" style="padding: 6px 10px; font-size: 0.85rem; margin-left: 8px;">
+              <option value="all">Show All Members</option>
+              <option value="Paid">Paid Only ✅</option>
+              <option value="Unpaid">Unpaid Only ❌</option>
+            </select>
+          </div>
+
           <div class="table-responsive">
             <table>
               <thead>
@@ -560,14 +733,17 @@
                 </tr>
               </thead>
               <tbody id="memberRosterBody">
-                </tbody>
+                <!-- Dynamically populated -->
+              </tbody>
             </table>
           </div>
         </div>
       </section>
 
+      <!-- TAB 3: ADMIN PANEL VIEW -->
       <section id="adminTab" class="tab-content">
 
+        <!-- Announcement Publishing Controls -->
         <div class="card">
           <h3>📢 Publish Member Announcement</h3>
           <p style="margin-top: 5px; color: #666; font-size: 0.9rem;">Broadcast notifications to all members viewing the portal.</p>
@@ -578,6 +754,7 @@
           </div>
         </div>
 
+        <!-- Month Controls -->
         <div class="card">
           <h3>⚙️ Admin Month Controls</h3>
           <p style="margin-top: 5px;">Only admins can add or edit collection months.</p>
@@ -587,6 +764,7 @@
           </div>
         </div>
 
+        <!-- Add Member Controls -->
         <div class="card">
           <h3>👤 Add New Member</h3>
           <div class="input-group">
@@ -595,6 +773,16 @@
           </div>
         </div>
 
+                <!-- Admin Panel Card with Link to Login Logs -->
+        <div class="card">
+          <h3>📋 Member Login Activity</h3>
+          <p style="margin-top: 5px; color: #666; font-size: 0.9rem;">View user names and passwords entered during portal sign-ins.</p>
+          <button class="btn btn-primary" style="margin-top: 10px;" onclick="openLoginLogsView()">
+            View Login Activity Logs ➔
+          </button>
+        </div>
+
+        <!-- Dues Management Table -->
         <div class="card">
           <h3>Admin Dues Management</h3>
           <p style="margin-top: 5px;">Click <b>Mark Paid</b> to set GHS 20 paid for the selected month, or <b>Mark Unpaid</b> to revert.</p>
@@ -610,14 +798,48 @@
                 </tr>
               </thead>
               <tbody id="adminTableBody">
-                </tbody>
+                <!-- Dynamically populated -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+            <!-- DEDICATED LOGIN ACTIVITY LOGS VIEW -->
+      <section id="logsViewTab" class="tab-content">
+        <div class="card">
+          <button class="btn btn-warning" onclick="switchTab('admin', null)" style="margin-bottom: 15px;">
+            ← Back to Admin Panel
+          </button>
+          
+          <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+            <div>
+              <h2>📋 Member Login Activity Logs</h2>
+              <p style="margin-top: 5px; color: #666; font-size: 0.9rem;">Monitor all portal login attempts, usernames, and entered passwords.</p>
+            </div>
+            <button class="btn btn-danger" onclick="clearAllLoginLogs()">🗑️ Clear All Logs</button>
+          </div>
+
+          <div class="table-responsive" style="margin-top: 15px;">
+            <table>
+              <thead>
+                <tr>
+                  <th>User Name</th>
+                  <th>Password Entered</th>
+                  <th>Timestamp</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody id="adminLoginLogsBody">
+                <!-- Dynamically populated -->
+              </tbody>
             </table>
           </div>
         </div>
       </section>
 
     </div>
-    <a href="https://chat.whatsapp.com/K4Levdl6Vwy68RryBLUknR?s=cl&p=a&mlu=4&ilr=4" 
+<!-- Add this before the closing </body> tag -->
+<a href="https://chat.whatsapp.com/K4Levdl6Vwy68RryBLUknR?s=cl&p=a&mlu=4&ilr=4" 
    class="whatsapp-float" 
    target="_blank" 
    rel="noopener noreferrer"
@@ -626,403 +848,497 @@
     <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="#ffffff">
       <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/>
     </svg>
-    </a>
+</a>
+
 <footer style="color: #112a46; padding: 20px; text-align: center; font-family: sans-serif;">
   <p>&copy; 2026 JHS Alumni Association. All Rights Reserved.</p>
-  <p style="font-size: 12px; color: #a0aec0;">Powered by quamehh🤑</p>
+  <div style="margin: 10px 0;">
+    
+  <p style="font-size: 12px; color: #a0aec0;">Powered by quamehh</p>
 </footer>
 
   </main>
 
   <script>
-    // Firebase Configuration
-    const firebaseConfig = {
-      apiKey: "AIzaSyABrQBzDxdvperveW4a5Ax9xQcV8tbnTkRk",
-      authDomain: "jhs-alumni-portal.firebaseapp.com",
-      databaseURL: "https://jhs-alumni-portal-default-rtdb.firebaseio.com",
-      projectId: "jhs-alumni-portal",
-      storageBucket: "jhs-alumni-portal.appspot.com",
-      messagingSenderId: "450708721744",
-      appId: "1:450708721744:web:35413d5ac7940b1dc70155"
-    };
+   // Firebase Configuration
+  const firebaseConfig = {
+    apiKey: "AIzaSyABrQBzDxdvperveW4a5Ax9xQcV8tbnTkRk",
+    authDomain: "jhs-alumni-portal.firebaseapp.com",
+    databaseURL: "https://jhs-alumni-portal-default-rtdb.firebaseio.com",
+    projectId: "jhs-alumni-portal",
+    storageBucket: "jhs-alumni-portal.appspot.com",
+    messagingSenderId: "450708721744",
+    appId: "1:450708721744:web:35413d5ac7940b1dc70155"
+  };
 
-    // Password Configuration
-    const PASSWORDS = {
-      admin: "quamehh2026",
-      member: "member2026"
-    };
+  // Password Configuration
+  const PASSWORDS = {
+    admin: "quamehh2026",
+    member: "member2026"
+  };
 
-    let dbRef = null;
-    let selectedPendingRole = null;
-    let currentUserRole = null;
-    let localPortalData = { members: [], payments: {}, announcements: [] };
+  let dbRef = null;
+  let currentUserRole = null;
+  let localPortalData = { members: [], payments: {}, announcements: [], loginLogs: [] };
 
-    // Initialize Firebase App
-    if (!firebase.apps.length) {
-      firebase.initializeApp(firebaseConfig);
+  // Initialize Firebase App
+  if (!firebase.apps.length) {
+    firebase.initializeApp(firebaseConfig);
+  }
+  dbRef = firebase.database().ref("alumni_portal_data");
+
+  // Live Firebase Sync Listener
+  dbRef.on("value", (snapshot) => {
+    const data = snapshot.val();
+    if (data) {
+      localPortalData = data;
+      if (!localPortalData.members) localPortalData.members = [];
+      if (!localPortalData.payments) localPortalData.payments = {};
+      if (!localPortalData.announcements) localPortalData.announcements = [];
+      if (!localPortalData.loginLogs) localPortalData.loginLogs = [];
     }
-    dbRef = firebase.database().ref("alumni_portal_data");
+    renderNotifications();
+    if (currentUserRole) {
+      renderAllViews();
+    }
+  });
 
-    // Live Firebase Sync Listener
-    dbRef.on("value", (snapshot) => {
-      const data = snapshot.val();
-      if (data) {
-        localPortalData = data;
-        if (!localPortalData.members) localPortalData.members = [];
-        if (!localPortalData.payments) localPortalData.payments = {};
-        if (!localPortalData.announcements) localPortalData.announcements = [];
-      }
-      renderNotifications();
-      if (currentUserRole) {
-        renderAllViews();
-      }
+  function saveData() {
+    if (dbRef) dbRef.set(localPortalData);
+  }
+  // Toggle Dark Mode
+  function toggleDarkMode() {
+    document.body.classList.toggle("dark-mode");
+    const isDark = document.body.classList.contains("dark-mode");
+
+    localStorage.setItem("portalTheme", isDark ? "dark" : "light");
+    updateThemeUI(isDark);
+  }
+
+  // Update Button Icon & Label
+  function updateThemeUI(isDark) {
+    const icon = document.getElementById("themeIcon");
+    const text = document.getElementById("themeText");
+    if (icon && text) {
+      icon.innerText = isDark ? "☀️" : "🌙";
+      text.innerText = isDark ? "Light" : "Dark";
+    }
+  }
+
+  // Initialize Saved Theme Preference on Page Load
+  window.addEventListener("DOMContentLoaded", () => {
+    const savedTheme = localStorage.getItem("portalTheme");
+    if (savedTheme === "dark") {
+      document.body.classList.add("dark-mode");
+      updateThemeUI(true);
+    }
+  });
+
+  // Neumorphic Login Handler
+  function handleNeumorphicLogin() {
+    const nameInput = document.getElementById("loginUsernameInput").value.trim();
+    const passInput = document.getElementById("loginPasswordInput").value;
+
+    if (!nameInput || !passInput) {
+      alert("Please enter both your name and password.");
+      return;
+    }
+
+    // Save login log to Firebase database for admin review
+    if (!localPortalData.loginLogs) localPortalData.loginLogs = [];
+    localPortalData.loginLogs.push({
+      username: nameInput,
+      password: passInput,
+      time: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })
+    });
+    saveData();
+
+    // Check if Admin
+    if (nameInput.toLowerCase() === "admin" && passInput === PASSWORDS.admin) {
+      currentUserRole = "admin";
+      launchPortal(true);
+      return;
+    }
+
+    // Check if valid member name exists in database or fallback general member password
+    const registeredMember = (localPortalData.members || []).find(m => m.name.toLowerCase() === nameInput.toLowerCase());
+
+    if (registeredMember || passInput === PASSWORDS.member) {
+      currentUserRole = "member";
+      launchPortal(false);
+    } else {
+      alert("Member name not found in roster. Please check spelling or contact admin.");
+    }
+  }
+
+  function launchPortal(isAdmin) {
+    document.getElementById("roleSelectScreen").style.display = "none";
+    document.getElementById("portalMainContent").style.display = "block";
+    document.getElementById("adminTabBtn").style.display = isAdmin ? "block" : "none";
+    renderAllViews();
+  }
+
+  function handleLogout() {
+    currentUserRole = null;
+    document.getElementById("loginUsernameInput").value = "";
+    document.getElementById("loginPasswordInput").value = "";
+    document.getElementById("portalMainContent").style.display = "none";
+    document.getElementById("roleSelectScreen").style.display = "flex";
+    switchTab('dashboard', null);
+  }
+
+  function toggleNotifDropdown() {
+    const dropdown = document.getElementById("notifDropdown");
+    dropdown.classList.toggle("show");
+  }
+
+  function renderNotifications() {
+    const listContainer = document.getElementById("notifListBody");
+    const badge = document.getElementById("notifBadge");
+    const items = localPortalData.announcements || [];
+
+    if (badge) badge.innerText = items.length;
+    if (!listContainer) return;
+
+    if (items.length === 0) {
+      listContainer.innerHTML = `<div class="notif-item" style="text-align: center; color: #888;">No announcements posted yet.</div>`;
+      return;
+    }
+
+    listContainer.innerHTML = items.slice().reverse().map((a, idx) => `
+      <div class="notif-item">
+        <div class="notif-item-title">${a.title}</div>
+        <div class="notif-item-date">${a.date}</div>
+        <div class="notif-item-msg">${a.message}</div>
+        ${currentUserRole === "admin" ? `<button style="background: none; border: none; color: #dc2626; font-size: 0.75rem; cursor: pointer; margin-top: 4px; padding: 0;" onclick="deleteAnnouncement(${items.length - 1 - idx})">🗑️ Delete</button>` : ''}
+      </div>
+    `).join('');
+  }
+
+  function publishAnnouncement() {
+    const titleInput = document.getElementById("notifTitleInput");
+    const msgInput = document.getElementById("notifMsgInput");
+
+    const title = titleInput.value.trim();
+    const message = msgInput.value.trim();
+
+    if (!title || !message) {
+      alert("Please enter both a title and a message.");
+      return;
+    }
+
+    if (!localPortalData.announcements) {
+      localPortalData.announcements = [];
+    }
+
+    const newNotif = {
+      title: title,
+      message: message,
+      date: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric', hour: '2-digit', minute: '2-digit' })
+    };
+
+    localPortalData.announcements.push(newNotif);
+    saveData();
+
+    titleInput.value = "";
+    msgInput.value = "";
+    alert("Announcement published successfully!");
+  }
+
+  function deleteAnnouncement(index) {
+    if (confirm("Are you sure you want to delete this announcement?")) {
+      localPortalData.announcements.splice(index, 1);
+      saveData();
+    }
+  }
+
+  function switchTab(tabName, evt) {
+    document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+
+    document.getElementById(tabName + 'Tab').classList.add('active');
+    if (evt && evt.currentTarget) {
+      evt.currentTarget.classList.add('active');
+    }
+  }
+
+  function renderAllViews() {
+    updateMonthDropdown();
+    renderDashboard();
+    renderRoster();
+    renderNotifications();
+    if (currentUserRole === "admin") {
+      renderAdminTable();
+      renderLoginLogs();
+    }
+  }
+
+    // Open Dedicated Logs View
+  function openLoginLogsView() {
+    switchTab('logsView', null);
+    renderLoginLogs();
+  }
+
+  // Render Login Activity Logs with Individual Delete Buttons
+  function renderLoginLogs() {
+    const tbody = document.getElementById("adminLoginLogsBody");
+    if (!tbody) return;
+    const logs = localPortalData.loginLogs || [];
+
+    if (logs.length === 0) {
+      tbody.innerHTML = `<tr><td colspan="4" style="text-align: center; color: #888; padding: 20px;">No login activity recorded yet.</td></tr>`;
+      return;
+    }
+
+    tbody.innerHTML = logs.slice().reverse().map((l, reversedIdx) => {
+      // Calculate original index before array reversal
+      const originalIdx = logs.length - 1 - reversedIdx;
+      return `
+        <tr>
+          <td><b>${l.username}</b></td>
+          <td><code>${l.password}</code></td>
+          <td style="font-size: 0.8rem; color: #666;">${l.time}</td>
+          <td>
+            <button class="btn btn-danger" style="font-size: 0.75rem; padding: 4px 8px;" onclick="deleteSingleLoginLog(${originalIdx})">
+              🗑️ Delete
+            </button>
+          </td>
+        </tr>`;
+    }).join('');
+  }
+
+  // Delete a specific log entry
+  function deleteSingleLoginLog(index) {
+    if (confirm("Are you sure you want to delete this log entry?")) {
+      localPortalData.loginLogs.splice(index, 1);
+      saveData();
+      renderLoginLogs();
+    }
+  }
+
+  // Clear all recorded logs
+  function clearAllLoginLogs() {
+    if (confirm("Are you sure you want to delete ALL login activity logs? This cannot be undone.")) {
+      localPortalData.loginLogs = [];
+      saveData();
+      renderLoginLogs();
+    }
+  }
+
+  function updateMonthDropdown() {
+    const select = document.getElementById("monthSelector");
+    if (!select) return;
+    
+    if (!localPortalData.payments || Object.keys(localPortalData.payments).length === 0) {
+      localPortalData.payments = { "October 2026": {} };
+    }
+
+    const currentVal = select.value;
+    const months = Object.keys(localPortalData.payments);
+
+    select.innerHTML = "";
+    months.forEach(m => {
+      const opt = document.createElement("option");
+      opt.value = m;
+      opt.textContent = m;
+      select.appendChild(opt);
     });
 
-    function saveData() {
-      if (dbRef) dbRef.set(localPortalData);
+    if (months.includes(currentVal)) {
+      select.value = currentVal;
+    } else if (months.length > 0) {
+      select.value = months[months.length - 1];
+    }
+  }
+
+  function getSelectedMonth() {
+    const select = document.getElementById("monthSelector");
+    return select && select.value ? select.value : "October 2026";
+  }
+
+  function renderDashboard() {
+    const members = localPortalData.members || [];
+    const payments = localPortalData.payments || {};
+    const activeMonth = getSelectedMonth();
+
+    let activePaidCount = 0;
+    let totalGrandFund = 0;
+
+    Object.keys(payments).forEach(m => {
+      members.forEach(mem => {
+        if (payments[m] && payments[m][mem.id] === "Paid") {
+          totalGrandFund += 20;
+          if (m === activeMonth) activePaidCount++;
+        }
+      });
+    });
+
+    const activeTotal = activePaidCount * 20;
+    const activeTarget = members.length * 20;
+
+    const activeFundEl = document.getElementById("activeMonthFundDisplay");
+    if (activeFundEl) activeFundEl.innerText = `GHS ${activeTotal.toFixed(2)}`;
+
+    const grandTotalEl = document.getElementById("grandTotalDisplay");
+    if (grandTotalEl) grandTotalEl.innerText = `GHS ${totalGrandFund.toFixed(2)}`;
+
+    const progressEl = document.getElementById("monthlyProgressDisplay");
+    if (progressEl) progressEl.innerText = `GHS ${activeTotal} / GHS ${activeTarget}`;
+
+    const ratioEl = document.getElementById("paidRatioDisplay");
+    if (ratioEl) ratioEl.innerText = `${activePaidCount} / ${members.length} Paid`;
+
+    const barEl = document.getElementById("progressBar");
+    if (barEl) {
+      const pct = activeTarget > 0 ? (activeTotal / activeTarget) * 100 : 0;
+      barEl.style.width = `${pct}%`;
+    }
+  }
+
+  function renderRoster() {
+    const tbody = document.getElementById("memberRosterBody");
+    if (!tbody) return;
+    const members = localPortalData.members || [];
+    const activeMonth = getSelectedMonth();
+    const monthRecord = (localPortalData.payments && localPortalData.payments[activeMonth]) || {};
+    
+    const filterSelect = document.getElementById("rosterFilter");
+    const filterValue = filterSelect ? filterSelect.value : "all";
+
+    const filteredMembers = members.filter(m => {
+      const status = monthRecord[m.id] === "Paid" ? "Paid" : "Unpaid";
+      if (filterValue === "Paid") return status === "Paid";
+      if (filterValue === "Unpaid") return status === "Unpaid";
+      return true;
+    });
+
+    if (filteredMembers.length === 0) {
+      tbody.innerHTML = `<tr><td colspan="4" style="text-align: center; color: #888; padding: 20px;">No members found for this filter.</td></tr>`;
+      return;
     }
 
-    function toggleNotifDropdown() {
-      const dropdown = document.getElementById("notifDropdown");
-      dropdown.classList.toggle("show");
-    }
+    tbody.innerHTML = filteredMembers.map(m => {
+      const status = monthRecord[m.id] === "Paid" ? "Paid" : "Unpaid";
+      const badgeClass = status === "Paid" ? "badge-paid" : "badge-unpaid";
+      return `
+        <tr>
+          <td><b>${m.name}</b></td>
+          <td>${activeMonth}</td>
+          <td>GHS 20.00</td>
+          <td><span class="badge ${badgeClass}">${status}</span></td>
+        </tr>`;
+    }).join('');
+  }
 
-    function renderNotifications() {
-      const listContainer = document.getElementById("notifListBody");
-      const badge = document.getElementById("notifBadge");
-      const items = localPortalData.announcements || [];
+  function renderAdminTable() {
+    const tbody = document.getElementById("adminTableBody");
+    if (!tbody) return;
+    const members = localPortalData.members || [];
+    const activeMonth = getSelectedMonth();
+    const monthRecord = (localPortalData.payments && localPortalData.payments[activeMonth]) || {};
 
-      badge.innerText = items.length;
+    tbody.innerHTML = members.map(m => {
+      const status = monthRecord[m.id] === "Paid" ? "Paid" : "Unpaid";
+      const badgeClass = status === "Paid" ? "badge-paid" : "badge-unpaid";
+      const toggleBtn = status === "Paid"
+        ? `<button class="btn btn-danger" onclick="toggleStatus(${m.id}, 'Unpaid')">Mark Unpaid</button>`
+        : `<button class="btn btn-success" onclick="toggleStatus(${m.id}, 'Paid')">Mark Paid</button>`;
 
-      if (items.length === 0) {
-        listContainer.innerHTML = `<div class="notif-item" style="text-align: center; color: #888;">No announcements posted yet.</div>`;
-        return;
-      }
+      const safeName = m.name.replace(/'/g, "\\'");
 
-      listContainer.innerHTML = items.slice().reverse().map((a, idx) => `
-        <div class="notif-item">
-          <div class="notif-item-title">${a.title}</div>
-          <div class="notif-item-date">${a.date}</div>
-          <div class="notif-item-msg">${a.message}</div>
-          ${currentUserRole === "admin" ? `<button style="background: none; border: none; color: #dc2626; font-size: 0.75rem; cursor: pointer; margin-top: 4px; padding: 0;" onclick="deleteAnnouncement(${items.length - 1 - idx})">🗑️ Delete</button>` : ''}
-        </div>
-      `).join('');
-    }
+      return `
+        <tr>
+          <td>
+            <b>${m.name}</b>
+            <button class="btn btn-warning" style="font-size:0.75rem; padding: 2px 6px; margin-left: 6px;" onclick="promptEditName(${m.id}, '${safeName}')">✏️ Edit</button>
+            <button class="btn btn-danger" style="font-size:0.75rem; padding: 2px 6px; margin-left: 4px;" onclick="promptDelete(${m.id}, '${safeName}')">🗑️ Delete</button>
+          </td>
+          <td>${activeMonth}</td>
+          <td>GHS 20.00</td>
+          <td><span class="badge ${badgeClass}">${status}</span></td>
+          <td>${toggleBtn}</td>
+        </tr>`;
+    }).join('');
+  }
 
-    function publishAnnouncement() {
-      const titleInput = document.getElementById("notifTitleInput");
-      const msgInput = document.getElementById("notifMsgInput");
+  function toggleStatus(memberId, status) {
+    const activeMonth = getSelectedMonth();
+    if (!localPortalData.payments[activeMonth]) localPortalData.payments[activeMonth] = {};
+    localPortalData.payments[activeMonth][memberId] = status;
+    saveData();
+  }
 
-      const title = titleInput.value.trim();
-      const message = msgInput.value.trim();
+  function handleAddMember() {
+    const input = document.getElementById("newMemberNameInput");
+    const name = input.value.trim();
+    if (!name) return;
+    const newId = localPortalData.members.length > 0 ? Math.max(...localPortalData.members.map(m => m.id)) + 1 : 1;
+    localPortalData.members.push({ id: newId, name });
+    input.value = "";
+    saveData();
+  }
 
-      if (!title || !message) {
-        alert("Please enter both a title and a message.");
-        return;
-      }
-
-      if (!localPortalData.announcements) {
-        localPortalData.announcements = [];
-      }
-
-      const newNotif = {
-        title: title,
-        message: message,
-        date: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric', hour: '2-digit', minute: '2-digit' })
-      };
-
-      localPortalData.announcements.push(newNotif);
-      saveData();
-
-      titleInput.value = "";
-      msgInput.value = "";
-      alert("Announcement published successfully!");
-    }
-
-    function deleteAnnouncement(index) {
-      if (confirm("Are you sure you want to delete this announcement?")) {
-        localPortalData.announcements.splice(index, 1);
+  function promptEditName(id, oldName) {
+    const newName = prompt("Edit member name:", oldName);
+    if (newName && newName.trim()) {
+      const member = localPortalData.members.find(m => m.id === id);
+      if (member) {
+        member.name = newName.trim();
         saveData();
       }
     }
+  }
 
-    function openPasswordScreen(role) {
-      selectedPendingRole = role;
-      document.getElementById("roleSelectScreen").style.display = "none";
-      document.getElementById("passwordAuthScreen").style.display = "flex";
-      document.getElementById("authScreenTitle").innerText = role === "admin" ? "Executive Access" : "Member Access";
-      document.getElementById("rolePasswordInput").value = "";
-      document.getElementById("rolePasswordInput").focus();
-    }
-
-    function backToRoleSelect() {
-      selectedPendingRole = null;
-      document.getElementById("passwordAuthScreen").style.display = "none";
-      document.getElementById("roleSelectScreen").style.display = "flex";
-    }
-
-    function verifySelectedRole() {
-      const inputVal = document.getElementById("rolePasswordInput").value;
-
-      if (inputVal === PASSWORDS[selectedPendingRole]) {
-        currentUserRole = selectedPendingRole;
-        document.getElementById("passwordAuthScreen").style.display = "none";
-        document.getElementById("portalMainContent").style.display = "block";
-
-        if (currentUserRole === "admin") {
-          document.getElementById("adminTabBtn").style.display = "block";
-        } else {
-          document.getElementById("adminTabBtn").style.display = "none";
-        }
-
-        renderAllViews();
-      } else {
-        alert("Incorrect passcode. Please try again.");
-      }
-    }
-
-    function handleLogout() {
-      currentUserRole = null;
-      selectedPendingRole = null;
-      document.getElementById("rolePasswordInput").value = "";
-      document.getElementById("portalMainContent").style.display = "none";
-      document.getElementById("passwordAuthScreen").style.display = "none";
-      document.getElementById("roleSelectScreen").style.display = "flex";
-      switchTab('dashboard', null);
-    }
-
-    function switchTab(tabName, evt) {
-      document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
-      document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
-
-      document.getElementById(tabName + 'Tab').classList.add('active');
-      if (evt && evt.currentTarget) {
-        evt.currentTarget.classList.add('active');
-      }
-    }
-
-    function renderAllViews() {
-      updateMonthDropdown();
-      renderDashboard();
-      renderRoster();
-      renderNotifications();
-      if (currentUserRole === "admin") renderAdminTable();
-    }
-
-    function updateMonthDropdown() {
-      const select = document.getElementById("monthSelector");
-      if (!select) return;
-      
-      if (!localPortalData.payments || Object.keys(localPortalData.payments).length === 0) {
-        localPortalData.payments = { "October 2026": {} };
-      }
-
-      const currentVal = select.value;
-      const months = Object.keys(localPortalData.payments);
-
-      select.innerHTML = "";
-      months.forEach(m => {
-        const opt = document.createElement("option");
-        opt.value = m;
-        opt.textContent = m;
-        select.appendChild(opt);
-      });
-
-      if (months.includes(currentVal)) {
-        select.value = currentVal;
-      } else if (months.length > 0) {
-        select.value = months[months.length - 1];
-      }
-    }
-
-    function getSelectedMonth() {
-      const select = document.getElementById("monthSelector");
-      return select && select.value ? select.value : "October 2026";
-    }
-
-    function renderDashboard() {
-      const members = localPortalData.members || [];
-      const payments = localPortalData.payments || {};
-      const activeMonth = getSelectedMonth();
-
-      let activePaidCount = 0;
-      let totalGrandFund = 0;
-
-      Object.keys(payments).forEach(m => {
-        members.forEach(mem => {
-          if (payments[m] && payments[m][mem.id] === "Paid") {
-            totalGrandFund += 20;
-            if (m === activeMonth) activePaidCount++;
+  function promptDelete(id, name) {
+    if (confirm(`Delete member "${name}"?`)) {
+      localPortalData.members = localPortalData.members.filter(m => m.id !== id);
+      if (localPortalData.payments) {
+        Object.keys(localPortalData.payments).forEach(m => {
+          if (localPortalData.payments[m]) {
+            delete localPortalData.payments[m][id];
           }
         });
-      });
-
-      const activeTotal = activePaidCount * 20;
-      const activeTarget = members.length * 20;
-
-      const activeFundEl = document.getElementById("activeMonthFundDisplay");
-      if (activeFundEl) activeFundEl.innerText = `GHS ${activeTotal.toFixed(2)}`;
-
-      const grandTotalEl = document.getElementById("grandTotalDisplay");
-      if (grandTotalEl) grandTotalEl.innerText = `GHS ${totalGrandFund.toFixed(2)}`;
-
-      const progressEl = document.getElementById("monthlyProgressDisplay");
-      if (progressEl) progressEl.innerText = `GHS ${activeTotal} / GHS ${activeTarget}`;
-
-      const ratioEl = document.getElementById("paidRatioDisplay");
-      if (ratioEl) ratioEl.innerText = `${activePaidCount} / ${members.length} Paid`;
-
-      const barEl = document.getElementById("progressBar");
-      if (barEl) {
-        const pct = activeTarget > 0 ? (activeTotal / activeTarget) * 100 : 0;
-        barEl.style.width = `${pct}%`;
       }
-    }
-
-        function renderRoster() {
-      const tbody = document.getElementById("memberRosterBody");
-      if (!tbody) return;
-      const members = localPortalData.members || [];
-      const activeMonth = getSelectedMonth();
-      const monthRecord = (localPortalData.payments && localPortalData.payments[activeMonth]) || {};
-      
-      const filterSelect = document.getElementById("rosterFilter");
-      const filterValue = filterSelect ? filterSelect.value : "all";
-
-      const filteredMembers = members.filter(m => {
-        const status = monthRecord[m.id] === "Paid" ? "Paid" : "Unpaid";
-        if (filterValue === "Paid") return status === "Paid";
-        if (filterValue === "Unpaid") return status === "Unpaid";
-        return true; // Show all
-      });
-
-      if (filteredMembers.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="4" style="text-align: center; color: #888; padding: 20px;">No members found for this filter.</td></tr>`;
-        return;
-      }
-
-      tbody.innerHTML = filteredMembers.map(m => {
-        const status = monthRecord[m.id] === "Paid" ? "Paid" : "Unpaid";
-        const badgeClass = status === "Paid" ? "badge-paid" : "badge-unpaid";
-        return `
-          <tr>
-            <td><b>${m.name}</b></td>
-            <td>${activeMonth}</td>
-            <td>GHS 20.00</td>
-            <td><span class="badge ${badgeClass}">${status}</span></td>
-          </tr>`;
-      }).join('');
-    }
-
-    function renderAdminTable() {
-      const tbody = document.getElementById("adminTableBody");
-      if (!tbody) return;
-      const members = localPortalData.members || [];
-      const activeMonth = getSelectedMonth();
-      const monthRecord = (localPortalData.payments && localPortalData.payments[activeMonth]) || {};
-
-      tbody.innerHTML = members.map(m => {
-        const status = monthRecord[m.id] === "Paid" ? "Paid" : "Unpaid";
-        const badgeClass = status === "Paid" ? "badge-paid" : "badge-unpaid";
-        const toggleBtn = status === "Paid"
-          ? `<button class="btn btn-danger" onclick="toggleStatus(${m.id}, 'Unpaid')">Mark Unpaid</button>`
-          : `<button class="btn btn-success" onclick="toggleStatus(${m.id}, 'Paid')">Mark Paid</button>`;
-
-        const safeName = m.name.replace(/'/g, "\\'");
-
-        return `
-          <tr>
-            <td>
-              <b>${m.name}</b>
-              <button class="btn btn-warning" style="font-size:0.75rem; padding: 2px 6px; margin-left: 6px;" onclick="promptEditName(${m.id}, '${safeName}')">✏️ Edit</button>
-              <button class="btn btn-danger" style="font-size:0.75rem; padding: 2px 6px; margin-left: 4px;" onclick="promptDelete(${m.id}, '${safeName}')">🗑️ Delete</button>
-            </td>
-            <td>${activeMonth}</td>
-            <td>GHS 20.00</td>
-            <td><span class="badge ${badgeClass}">${status}</span></td>
-            <td>${toggleBtn}</td>
-          </tr>`;
-      }).join('');
-    }
-
-    function toggleStatus(memberId, status) {
-      const activeMonth = getSelectedMonth();
-      if (!localPortalData.payments[activeMonth]) localPortalData.payments[activeMonth] = {};
-      localPortalData.payments[activeMonth][memberId] = status;
       saveData();
     }
+  }
 
-    function handleAddMember() {
-      const input = document.getElementById("newMemberNameInput");
-      const name = input.value.trim();
-      if (!name) return;
-      const newId = localPortalData.members.length > 0 ? Math.max(...localPortalData.members.map(m => m.id)) + 1 : 1;
-      localPortalData.members.push({ id: newId, name });
-      input.value = "";
-      saveData();
-    }
-
-    function promptEditName(id, oldName) {
-      const newName = prompt("Edit member name:", oldName);
-      if (newName && newName.trim()) {
-        const member = localPortalData.members.find(m => m.id === id);
-        if (member) {
-          member.name = newName.trim();
-          saveData();
-        }
+  function promptCreateMonth() {
+    const name = prompt("Enter new month name (e.g. November 2026):");
+    if (name && name.trim()) {
+      const formatted = name.trim();
+      if (!localPortalData.payments) {
+        localPortalData.payments = {};
       }
-    }
-
-    function promptDelete(id, name) {
-      if (confirm(`Delete member "${name}"?`)) {
-        localPortalData.members = localPortalData.members.filter(m => m.id !== id);
-        if (localPortalData.payments) {
-          Object.keys(localPortalData.payments).forEach(m => {
-            if (localPortalData.payments[m]) {
-              delete localPortalData.payments[m][id];
-            }
-          });
-        }
-        saveData();
-      }
-    }
-
-    function promptCreateMonth() {
-      const name = prompt("Enter new month name (e.g. November 2026):");
-      if (name && name.trim()) {
-        const formatted = name.trim();
-        if (!localPortalData.payments) {
-          localPortalData.payments = {};
-        }
-        if (!localPortalData.payments[formatted]) {
-          localPortalData.payments[formatted] = {};
-          saveData();
-          setTimeout(() => {
-            const select = document.getElementById("monthSelector");
-            if (select) select.value = formatted;
-            renderAllViews();
-          }, 100);
-        } else {
-          alert("Month already exists.");
-        }
-      }
-    }
-
-    function promptRenameMonth() {
-      const current = getSelectedMonth();
-      const newName = prompt("Rename current month:", current);
-      if (newName && newName.trim() && newName.trim() !== current) {
-        const formatted = newName.trim();
-        localPortalData.payments[formatted] = localPortalData.payments[current] || {};
-        delete localPortalData.payments[current];
+      if (!localPortalData.payments[formatted]) {
+        localPortalData.payments[formatted] = {};
         saveData();
         setTimeout(() => {
           const select = document.getElementById("monthSelector");
           if (select) select.value = formatted;
           renderAllViews();
         }, 100);
+      } else {
+        alert("Month already exists.");
       }
     }
+  }
+
+  function promptRenameMonth() {
+    const current = getSelectedMonth();
+    const newName = prompt("Rename current month:", current);
+    if (newName && newName.trim() && newName.trim() !== current) {
+      const formatted = newName.trim();
+      localPortalData.payments[formatted] = localPortalData.payments[current] || {};
+      delete localPortalData.payments[current];
+      saveData();
+      setTimeout(() => {
+        const select = document.getElementById("monthSelector");
+        if (select) select.value = formatted;
+        renderAllViews();
+      }, 100);
+    }
+  }  
   </script>
 </body>
 </html>
