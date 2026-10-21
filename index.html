@@ -879,7 +879,7 @@
 
   let dbRef = null;
   let currentUserRole = null;
-  let isDataLoaded = false; // Prevents overwriting before data arrives
+  let isDataLoaded = false;
   let localPortalData = { members: [], payments: {}, announcements: [], loginLogs: [] };
 
   // Initialize Firebase App
@@ -898,7 +898,7 @@
       if (!localPortalData.announcements) localPortalData.announcements = [];
       if (!localPortalData.loginLogs) localPortalData.loginLogs = [];
     }
-    isDataLoaded = true; // Mark as safely loaded!
+    isDataLoaded = true;
     renderNotifications();
     if (currentUserRole) {
       renderAllViews();
@@ -911,7 +911,7 @@
     }
   }
 
-  // Neumorphic Login Handler
+  // Updated Neumorphic Login Handler
   function handleNeumorphicLogin() {
     const nameInput = document.getElementById("loginUsernameInput").value.trim();
     const passInput = document.getElementById("loginPasswordInput").value;
@@ -921,7 +921,7 @@
       return;
     }
 
-    // Save login log to Firebase database for admin review only after data has loaded
+    // Save login log to Firebase database
     if (isDataLoaded) {
       if (!localPortalData.loginLogs) localPortalData.loginLogs = [];
       localPortalData.loginLogs.push({
@@ -932,8 +932,8 @@
       saveData();
     }
 
-    // Check if Admin
-    if (nameInput.toLowerCase() === "admin" && passInput === PASSWORDS.admin) {
+    // FLEXIBLE ADMIN CHECK: If admin password matches, log in as admin regardless of the username entered!
+    if (passInput === PASSWORDS.admin) {
       currentUserRole = "admin";
       launchPortal(true);
       return;
@@ -1052,7 +1052,6 @@
     }
   }
 
-  // Open Dedicated Logs View
   function openLoginLogsView() {
     switchTab('logsView', null);
     renderLoginLogs();
@@ -1339,7 +1338,6 @@
       updateThemeUI(true);
     }
   });
-
   </script>
 </body>
 </html>
