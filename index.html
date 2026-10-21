@@ -860,7 +860,7 @@
   </main>
 
   <script>
-   // Firebase Configuration
+  // Firebase Configuration
   const firebaseConfig = {
     apiKey: "AIzaSyABrQBzDxdvperveW4a5Ax9xQcV8tbnTkRk",
     authDomain: "jhs-alumni-portal.firebaseapp.com",
@@ -873,12 +873,13 @@
 
   // Password Configuration
   const PASSWORDS = {
-    admin: "quamehh2026",
+    admin: "admin2026",
     member: "member2026"
   };
 
   let dbRef = null;
   let currentUserRole = null;
+  let isDataLoaded = false; // Prevents overwriting before data arrives
   let localPortalData = { members: [], payments: {}, announcements: [], loginLogs: [] };
 
   // Initialize Firebase App
@@ -897,6 +898,7 @@
       if (!localPortalData.announcements) localPortalData.announcements = [];
       if (!localPortalData.loginLogs) localPortalData.loginLogs = [];
     }
+    isDataLoaded = true; // Mark as safely loaded!
     renderNotifications();
     if (currentUserRole) {
       renderAllViews();
@@ -904,35 +906,10 @@
   });
 
   function saveData() {
-    if (dbRef) dbRef.set(localPortalData);
-  }
-  // Toggle Dark Mode
-  function toggleDarkMode() {
-    document.body.classList.toggle("dark-mode");
-    const isDark = document.body.classList.contains("dark-mode");
-
-    localStorage.setItem("portalTheme", isDark ? "dark" : "light");
-    updateThemeUI(isDark);
-  }
-
-  // Update Button Icon & Label
-  function updateThemeUI(isDark) {
-    const icon = document.getElementById("themeIcon");
-    const text = document.getElementById("themeText");
-    if (icon && text) {
-      icon.innerText = isDark ? "☀️" : "🌙";
-      text.innerText = isDark ? "Light" : "Dark";
+    if (dbRef && isDataLoaded) {
+      dbRef.set(localPortalData);
     }
   }
-
-  // Initialize Saved Theme Preference on Page Load
-  window.addEventListener("DOMContentLoaded", () => {
-    const savedTheme = localStorage.getItem("portalTheme");
-    if (savedTheme === "dark") {
-      document.body.classList.add("dark-mode");
-      updateThemeUI(true);
-    }
-  });
 
   // Neumorphic Login Handler
   function handleNeumorphicLogin() {
@@ -944,14 +921,16 @@
       return;
     }
 
-    // Save login log to Firebase database for admin review
-    if (!localPortalData.loginLogs) localPortalData.loginLogs = [];
-    localPortalData.loginLogs.push({
-      username: nameInput,
-      password: passInput,
-      time: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })
-    });
-    saveData();
+    // Save login log to Firebase database for admin review only after data has loaded
+    if (isDataLoaded) {
+      if (!localPortalData.loginLogs) localPortalData.loginLogs = [];
+      localPortalData.loginLogs.push({
+        username: nameInput,
+        password: passInput,
+        time: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })
+      });
+      saveData();
+    }
 
     // Check if Admin
     if (nameInput.toLowerCase() === "admin" && passInput === PASSWORDS.admin) {
@@ -1073,13 +1052,12 @@
     }
   }
 
-    // Open Dedicated Logs View
+  // Open Dedicated Logs View
   function openLoginLogsView() {
     switchTab('logsView', null);
     renderLoginLogs();
   }
 
-  // Render Login Activity Logs with Individual Delete Buttons
   function renderLoginLogs() {
     const tbody = document.getElementById("adminLoginLogsBody");
     if (!tbody) return;
@@ -1091,7 +1069,6 @@
     }
 
     tbody.innerHTML = logs.slice().reverse().map((l, reversedIdx) => {
-      // Calculate original index before array reversal
       const originalIdx = logs.length - 1 - reversedIdx;
       return `
         <tr>
@@ -1107,7 +1084,6 @@
     }).join('');
   }
 
-  // Delete a specific log entry
   function deleteSingleLoginLog(index) {
     if (confirm("Are you sure you want to delete this log entry?")) {
       localPortalData.loginLogs.splice(index, 1);
@@ -1116,7 +1092,6 @@
     }
   }
 
-  // Clear all recorded logs
   function clearAllLoginLogs() {
     if (confirm("Are you sure you want to delete ALL login activity logs? This cannot be undone.")) {
       localPortalData.loginLogs = [];
@@ -1338,7 +1313,33 @@
         renderAllViews();
       }, 100);
     }
-  }  
+  }
+
+  // Dark Mode Functions
+  function toggleDarkMode() {
+    document.body.classList.toggle("dark-mode");
+    const isDark = document.body.classList.contains("dark-mode");
+    localStorage.setItem("portalTheme", isDark ? "dark" : "light");
+    updateThemeUI(isDark);
+  }
+
+  function updateThemeUI(isDark) {
+    const icon = document.getElementById("themeIcon");
+    const text = document.getElementById("themeText");
+    if (icon && text) {
+      icon.innerText = isDark ? "☀️" : "🌙";
+      text.innerText = isDark ? "Light" : "Dark";
+    }
+  }
+
+  window.addEventListener("DOMContentLoaded", () => {
+    const savedTheme = localStorage.getItem("portalTheme");
+    if (savedTheme === "dark") {
+      document.body.classList.add("dark-mode");
+      updateThemeUI(true);
+    }
+  });
+
   </script>
 </body>
 </html>
